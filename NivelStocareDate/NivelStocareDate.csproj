@@ -4,17 +4,16 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{0CDADD04-5FFA-47BD-9E1B-FF64AEDEC8D9}</ProjectGuid>
-    <OutputType>Exe</OutputType>
-    <RootNamespace>MagazinPC</RootNamespace>
-    <AssemblyName>MagazinPC</AssemblyName>
+    <ProjectGuid>{4604DF14-5375-4241-BD6F-15B6DD555E7A}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>NivelStocareDate</RootNamespace>
+    <AssemblyName>NivelStocareDate</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -24,7 +23,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -43,20 +41,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
+    <Compile Include="StocareDate.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\LibrarieModeleMagazin\LibrarieModeleMagazin.csproj">
       <Project>{85f75543-0700-4266-bc59-58b59f7a76f6}</Project>
       <Name>LibrarieModeleMagazin</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\NivelStocareDate\NivelStocareDate.csproj">
-      <Project>{4604df14-5375-4241-bd6f-15b6dd555e7a}</Project>
-      <Name>NivelStocareDate</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
