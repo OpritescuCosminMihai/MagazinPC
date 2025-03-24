@@ -10,7 +10,8 @@ namespace MagazinPC
         static void Main(string[] args)
         {
             Magazin magazin = new Magazin();
-            StocareDate stocare = new StocareDate("StocComponente.txt", "StocPeriferice.txt");
+            StocareDateComponente stocareComponente = new StocareDateComponente("StocComponente.txt");
+            StocareDatePeriferice stocarePeriferice = new StocareDatePeriferice("StocPeriferice.txt");
             bool ruleaza = true;
 
             while (ruleaza)
@@ -32,24 +33,33 @@ namespace MagazinPC
                 {
                     case "1":
                         AdaugaProdusInMagazin(magazin);
+                        Console.ReadKey();
                         break;
                     case "2":
                         StergeProdusDinMagazin(magazin);
+                        Console.ReadKey();
                         break;
                     case "3":
                         magazin.AfiseazaProduse();
+                        Console.ReadKey();
                         break;
                     case "4":
                         CautaProdusInMagazin(magazin);
+                        Console.ReadKey();
                         break;
                     case "5":
-                        SalveazaUltimulProdus(magazin, stocare);
+                        SalveazaUltimulProdus(magazin, stocareComponente, stocarePeriferice);
+                        Console.ReadKey();
                         break;
                     case "6":
-                        AfiseazaProduseDinFisier(stocare);
+                        AfiseazaProduseDinFisier(stocareComponente, stocarePeriferice);
+                        Console.ReadKey();
                         break;
                     case "7":
-                        magazin.IncarcareDinFisier(stocare.IncarcaProduse());
+                        magazin.Produse.Clear();
+                        magazin.IncarcareDinFisier(stocareComponente.IncarcaProduse());
+                        magazin.IncarcareDinFisier(stocarePeriferice.IncarcaProduse());
+                        Console.ReadKey();
                         break;
                     case "8":
                         ruleaza = false;
@@ -57,6 +67,7 @@ namespace MagazinPC
                         break;
                     default:
                         Console.WriteLine("Optiune invalida! Incearca din nou.");
+                        Console.ReadKey();
                         break;
                 }
             }
@@ -65,7 +76,7 @@ namespace MagazinPC
         static void AdaugaProdusInMagazin(Magazin magazin)
         {
             Console.Write("Numele produsului: ");
-            string nume = Console.ReadLine();
+            string nume_produs = Console.ReadLine();
 
             Console.Write("Pretul produsului: ");
             float pret = float.Parse(Console.ReadLine());
@@ -76,7 +87,13 @@ namespace MagazinPC
             Console.Write("Categorie (1 = Componenta, 2 = Periferic): ");
             tip_produs categorie = (tip_produs)int.Parse(Console.ReadLine());
 
-            magazin.AdaugaProdus(new Produs(nume, pret, stoc, categorie));
+            Console.Write("Nume furnizor: ");
+            string nume_furnizor = Console.ReadLine();
+
+            Console.Write("Contact furnizor: ");
+            string contact = Console.ReadLine();
+
+            magazin.AdaugaProdus(new Produs(nume_produs, pret, stoc, categorie,new Furnizor(nume_furnizor,contact)));
         }
 
         static void StergeProdusDinMagazin(Magazin magazin)
@@ -93,11 +110,14 @@ namespace MagazinPC
             magazin.CautaProdus(nume);
         }
 
-        static void SalveazaUltimulProdus(Magazin magazin, StocareDate stocare)
+        static void SalveazaUltimulProdus(Magazin magazin, StocareDateComponente stocareComponente, StocareDatePeriferice stocarePeriferice)
         {
             if (magazin.Produse.Count > 0)
             {
-                stocare.SalveazaProdus(magazin.Produse.Count > 0 ? magazin.Produse[magazin.Produse.Count - 1] : null);
+                if (magazin.Produse[magazin.Produse.Count - 1].Categorie == tip_produs.Componenta)
+                    stocareComponente.SalveazaProdus(magazin.Produse.Count > 0 ? magazin.Produse[magazin.Produse.Count - 1] : null);
+                if (magazin.Produse[magazin.Produse.Count - 1].Categorie == tip_produs.Periferic)
+                    stocarePeriferice.SalveazaProdus(magazin.Produse.Count > 0 ? magazin.Produse[magazin.Produse.Count - 1] : null);
             }
             else
             {
@@ -105,9 +125,20 @@ namespace MagazinPC
             }
         }
 
-        static void AfiseazaProduseDinFisier(StocareDate stocare)
+        static void AfiseazaProduseDinFisier(StocareDateComponente stocareC, StocareDatePeriferice stocareP)
         {
-            stocare.AfiseazaProduseDinFisier();
+            List<Produs> prod1 = stocareC.ObtineProduseDinFisier();
+            Console.WriteLine("Produse in fisierComponente:");
+            foreach(Produs _prod in prod1)
+            {
+                Console.WriteLine(_prod.AfiseazaDetalii());
+            }
+            List<Produs> prod2 = stocareP.ObtineProduseDinFisier();
+            Console.WriteLine("Produse in fisierPeriferice:");
+            foreach (Produs _prod in prod2)
+            {
+                Console.WriteLine(_prod.AfiseazaDetalii());
+            }
         }
     }
 }

@@ -42,7 +42,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="StocareDate.cs" />
+    <Compile Include="StocareDateComponente.cs" />
+    <Compile Include="StocareDatePeriferice.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\LibrarieModeleMagazin\LibrarieModeleMagazin.csproj">

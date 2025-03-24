@@ -14,8 +14,6 @@ namespace LibrarieModeleMagazin
         }
         public void IncarcareDinFisier(List<Produs> ProduseDinFisier)
         {
-            Produse.Clear();
-
             foreach (Produs p in ProduseDinFisier)
             {
                 Produse.Add(p);

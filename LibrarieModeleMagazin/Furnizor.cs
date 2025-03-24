@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LibrarieModeleMagazin
 {
-    class Furnizor
+    public class Furnizor
     {
         public string Nume { get; set; }
         public string Contact { get; set; }

@@ -18,13 +18,15 @@ namespace LibrarieModeleMagazin
         public float Pret { get; set; }
         public int Stoc { get; set; }
         public tip_produs Categorie { get; set; }
+        public Furnizor furnizor { get; set; }
 
-        public Produs(string nume, float pret, int stoc, tip_produs categorie)
+        public Produs(string nume, float pret, int stoc, tip_produs categorie, Furnizor furnizor)
         {
             Nume = nume;
             Pret = pret;
             Stoc = stoc;
             Categorie = categorie;
+            this.furnizor = furnizor;
         }
         public Produs(string linieFisier)
         {
@@ -32,10 +34,12 @@ namespace LibrarieModeleMagazin
             Nume = date[0];
             Pret = float.Parse(date[1]);
             Stoc = int.Parse(date[2]);
+            Categorie = (tip_produs)Enum.Parse(typeof(tip_produs), date[3]);
+            furnizor = new Furnizor(date[4], date[5]);
         }
         public string AfiseazaDetalii()
         {
-            return $"{Nume} - {Pret} RON - Stoc: {Stoc} - Categorie: {Categorie}";
+            return $"{Nume} - {Pret} RON - Stoc: {Stoc} - Categorie: {Categorie} - Furnizor: {furnizor.Nume} - Contact: {furnizor.Contact}";
         }
     }
 }
