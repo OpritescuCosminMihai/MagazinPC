@@ -12,13 +12,6 @@ namespace LibrarieModeleMagazin
         {
             Produse.Add(produs);
         }
-        public void IncarcareDinFisier(List<Produs> ProduseDinFisier)
-        {
-            foreach (Produs p in ProduseDinFisier)
-            {
-                Produse.Add(p);
-            }
-        }
         public void StergeProdus(string numeProdus)
         {
             Produs produs = Produse.FirstOrDefault(p => p.Nume.Equals(numeProdus, StringComparison.OrdinalIgnoreCase));
@@ -32,7 +25,13 @@ namespace LibrarieModeleMagazin
                 Console.WriteLine("Produsul nu exista.");
             }
         }
-
+        public void IncarcareDinFisier(List<Produs> ProduseDinFisier)
+        {
+            foreach (Produs p in ProduseDinFisier)
+            {
+                Produse.Add(p);
+            }
+        }
         public void AfiseazaProduse()
         {
             if (Produse.Count == 0)
@@ -47,7 +46,6 @@ namespace LibrarieModeleMagazin
                 }
             }
         }
-
         public void CautaProdus(string numeProdus)
         {
             Produs produs = Produse.FirstOrDefault(p => p.Nume.Equals(numeProdus, StringComparison.OrdinalIgnoreCase));

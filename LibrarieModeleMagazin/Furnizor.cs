@@ -19,5 +19,10 @@ namespace LibrarieModeleMagazin
         {
             return $"Nume_Furnizor: {Nume} Contact: {Contact}.";
         }
+        public override string ToString()
+        {
+            return $"{Nume} - {Contact}";
+        }
+
     }
 }
