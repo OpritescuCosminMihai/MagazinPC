@@ -140,5 +140,10 @@ namespace Forms
             dataGridView1.DataSource = null;
             dataGridView1.DataSource = magazin.Produse;
         }
+
+        private void txtNumeProdus_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

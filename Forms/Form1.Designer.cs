@@ -52,6 +52,7 @@
             this.txtNumeProdus.Size = new System.Drawing.Size(185, 26);
             this.txtNumeProdus.TabIndex = 0;
             this.txtNumeProdus.Text = "Nume Produs";
+            this.txtNumeProdus.TextChanged += new System.EventHandler(this.txtNumeProdus_TextChanged);
             // 
             // txtPret
             // 
@@ -102,12 +103,12 @@
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowHeadersWidth = 62;
             this.dataGridView1.RowTemplate.Height = 28;
-            this.dataGridView1.Size = new System.Drawing.Size(526, 252);
+            this.dataGridView1.Size = new System.Drawing.Size(755, 252);
             this.dataGridView1.TabIndex = 6;
             // 
             // btnAdauga
             // 
-            this.btnAdauga.Location = new System.Drawing.Point(236, 288);
+            this.btnAdauga.Location = new System.Drawing.Point(12, 273);
             this.btnAdauga.Name = "btnAdauga";
             this.btnAdauga.Size = new System.Drawing.Size(146, 42);
             this.btnAdauga.TabIndex = 7;
@@ -117,7 +118,7 @@
             // 
             // btnSterge
             // 
-            this.btnSterge.Location = new System.Drawing.Point(431, 288);
+            this.btnSterge.Location = new System.Drawing.Point(204, 438);
             this.btnSterge.Name = "btnSterge";
             this.btnSterge.Size = new System.Drawing.Size(146, 42);
             this.btnSterge.TabIndex = 8;
@@ -127,7 +128,7 @@
             // 
             // btnCauta
             // 
-            this.btnCauta.Location = new System.Drawing.Point(616, 288);
+            this.btnCauta.Location = new System.Drawing.Point(204, 390);
             this.btnCauta.Name = "btnCauta";
             this.btnCauta.Size = new System.Drawing.Size(146, 42);
             this.btnCauta.TabIndex = 9;
@@ -137,7 +138,7 @@
             // 
             // btnSalveaza
             // 
-            this.btnSalveaza.Location = new System.Drawing.Point(236, 350);
+            this.btnSalveaza.Location = new System.Drawing.Point(12, 321);
             this.btnSalveaza.Name = "btnSalveaza";
             this.btnSalveaza.Size = new System.Drawing.Size(146, 42);
             this.btnSalveaza.TabIndex = 10;
@@ -147,7 +148,7 @@
             // 
             // btnIncarca
             // 
-            this.btnIncarca.Location = new System.Drawing.Point(616, 350);
+            this.btnIncarca.Location = new System.Drawing.Point(487, 301);
             this.btnIncarca.Name = "btnIncarca";
             this.btnIncarca.Size = new System.Drawing.Size(146, 42);
             this.btnIncarca.TabIndex = 11;
@@ -157,7 +158,7 @@
             // 
             // txtNumeSterge
             // 
-            this.txtNumeSterge.Location = new System.Drawing.Point(12, 288);
+            this.txtNumeSterge.Location = new System.Drawing.Point(12, 446);
             this.txtNumeSterge.Name = "txtNumeSterge";
             this.txtNumeSterge.Size = new System.Drawing.Size(186, 26);
             this.txtNumeSterge.TabIndex = 12;
@@ -165,7 +166,7 @@
             // 
             // txtNumeCauta
             // 
-            this.txtNumeCauta.Location = new System.Drawing.Point(12, 332);
+            this.txtNumeCauta.Location = new System.Drawing.Point(13, 398);
             this.txtNumeCauta.Name = "txtNumeCauta";
             this.txtNumeCauta.Size = new System.Drawing.Size(186, 26);
             this.txtNumeCauta.TabIndex = 13;
@@ -173,7 +174,7 @@
             // 
             // Form1
             // 
-            this.ClientSize = new System.Drawing.Size(787, 928);
+            this.ClientSize = new System.Drawing.Size(1003, 928);
             this.Controls.Add(this.txtNumeCauta);
             this.Controls.Add(this.txtNumeSterge);
             this.Controls.Add(this.btnIncarca);
