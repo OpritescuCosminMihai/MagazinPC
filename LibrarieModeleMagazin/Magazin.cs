@@ -32,8 +32,9 @@ namespace LibrarieModeleMagazin
                 Produse.Add(p);
             }
         }
-        public void AfiseazaProduse()
+        public string[] AfiseazaProduse()
         {
+            string[] produse = new string[Produse.Count];
             if (Produse.Count == 0)
             {
                 Console.WriteLine("Nu exista produse.");
@@ -42,14 +43,18 @@ namespace LibrarieModeleMagazin
             {
                 foreach (Produs p in Produse)
                 {
-                    Console.WriteLine(p.AfiseazaDetalii());
+                    produse.Aggregate(p.AfiseazaDetalii(), (current, produs) => current + "\n" + produs);
                 }
             }
+            return produse;
         }
-        public void CautaProdus(string numeProdus)
+        public string CautaProdus(string numeProdus)
         {
             Produs produs = Produse.FirstOrDefault(p => p.Nume.Equals(numeProdus, StringComparison.OrdinalIgnoreCase));
-            Console.WriteLine(produs != null ? produs.AfiseazaDetalii() : "Produs inexistent.");
+            if (produs != null)
+                return produs.AfiseazaDetalii();
+            else
+                return "Produsul nu exista.";
         }
     }
 }

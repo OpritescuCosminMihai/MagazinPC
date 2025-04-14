@@ -20,7 +20,7 @@ namespace NivelStocareDate
             string filePath = fisierPeriferice;
             using (StreamWriter sw = new StreamWriter(filePath, true))
             {
-                sw.WriteLine($"{produs.Nume},{produs.Pret},{produs.Stoc},{produs.Categorie},{produs.furnizor.Nume},{produs.furnizor.Contact}");
+                sw.WriteLine($"{produs.ID},{produs.Nume},{produs.Pret},{produs.Stoc},{produs.Categorie},{produs.furnizor.Nume},{produs.furnizor.Contact}");
             }
             Console.WriteLine($"{produs.Nume} salvat in {filePath}");
         }
@@ -56,6 +56,16 @@ namespace NivelStocareDate
                 }
             }
             return lista;
+        }
+        public void RescrieFisier(List<Produs> produse)
+        {
+            using (StreamWriter sw = new StreamWriter(fisierPeriferice, false)) // sau fisierPeriferice
+            {
+                foreach (var produs in produse)
+                {
+                    sw.WriteLine($"{produs.ID},{produs.Nume},{produs.Pret},{produs.Stoc},{produs.Categorie},{produs.furnizor.Nume},{produs.furnizor.Contact}");
+                }
+            }
         }
     }
 }

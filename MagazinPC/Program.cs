@@ -32,7 +32,7 @@ namespace MagazinPC
                 switch (optiune)
                 {
                     case "1":
-                        AdaugaProdusInMagazin(magazin);
+                        AdaugaProdusInMagazin(magazin, stocareComponente, stocarePeriferice);
                         Console.ReadKey();
                         break;
                     case "2":
@@ -48,7 +48,6 @@ namespace MagazinPC
                         Console.ReadKey();
                         break;
                     case "5":
-                        SalveazaUltimulProdus(magazin, stocareComponente, stocarePeriferice);
                         Console.ReadKey();
                         break;
                     case "6":
@@ -73,7 +72,7 @@ namespace MagazinPC
             }
         }
 
-        static void AdaugaProdusInMagazin(Magazin magazin)
+        static void AdaugaProdusInMagazin(Magazin magazin, StocareDateComponente stocareComponente, StocareDatePeriferice stocarePeriferice)
         {
             Console.Write("Numele produsului: ");
             string nume_produs = Console.ReadLine();
@@ -94,6 +93,11 @@ namespace MagazinPC
             string contact = Console.ReadLine();
 
             magazin.AdaugaProdus(new Produs(nume_produs, pret, stoc, categorie,new Furnizor(nume_furnizor,contact)));
+            
+            if (magazin.Produse[magazin.Produse.Count - 1].Categorie == tip_produs.Componenta)
+                stocareComponente.SalveazaProdus(magazin.Produse.Count > 0 ? magazin.Produse[magazin.Produse.Count - 1] : null);
+            if (magazin.Produse[magazin.Produse.Count - 1].Categorie == tip_produs.Periferic)
+                stocarePeriferice.SalveazaProdus(magazin.Produse.Count > 0 ? magazin.Produse[magazin.Produse.Count - 1] : null);
         }
 
         static void StergeProdusDinMagazin(Magazin magazin)
@@ -109,22 +113,6 @@ namespace MagazinPC
             string nume = Console.ReadLine();
             magazin.CautaProdus(nume);
         }
-
-        static void SalveazaUltimulProdus(Magazin magazin, StocareDateComponente stocareComponente, StocareDatePeriferice stocarePeriferice)
-        {
-            if (magazin.Produse.Count > 0)
-            {
-                if (magazin.Produse[magazin.Produse.Count - 1].Categorie == tip_produs.Componenta)
-                    stocareComponente.SalveazaProdus(magazin.Produse.Count > 0 ? magazin.Produse[magazin.Produse.Count - 1] : null);
-                if (magazin.Produse[magazin.Produse.Count - 1].Categorie == tip_produs.Periferic)
-                    stocarePeriferice.SalveazaProdus(magazin.Produse.Count > 0 ? magazin.Produse[magazin.Produse.Count - 1] : null);
-            }
-            else
-            {
-                Console.WriteLine("Nu exista produse de salvat!");
-            }
-        }
-
         static void AfiseazaProduseDinFisier(StocareDateComponente stocareC, StocareDatePeriferice stocareP)
         {
             List<Produs> prod1 = stocareC.ObtineProduseDinFisier();

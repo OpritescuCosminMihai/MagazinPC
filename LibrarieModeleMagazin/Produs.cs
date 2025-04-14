@@ -14,6 +14,7 @@ namespace LibrarieModeleMagazin
     }
     public class Produs
     {
+        public Guid ID { get; private set; } = Guid.NewGuid();
         public string Nume { get; set; }
         public float Pret { get; set; }
         public int Stoc { get; set; }
@@ -27,19 +28,40 @@ namespace LibrarieModeleMagazin
             Stoc = stoc;
             Categorie = categorie;
             this.furnizor = furnizor;
+
+            if (!EsteValid())
+                throw new ArgumentException("Produsul conține date invalide.");
         }
+
         public Produs(string linieFisier)
         {
             var date = linieFisier.Split(',');
-            Nume = date[0];
-            Pret = float.Parse(date[1]);
-            Stoc = int.Parse(date[2]);
-            Categorie = (tip_produs)Enum.Parse(typeof(tip_produs), date[3]);
-            furnizor = new Furnizor(date[4], date[5]);
+
+            ID = Guid.Parse(date[0]);
+            Nume = date[1];
+            Pret = float.Parse(date[2]);
+            Stoc = int.Parse(date[3]);
+            Categorie = (tip_produs)Enum.Parse(typeof(tip_produs), date[4]);
+            furnizor = new Furnizor(date[5], date[6]);
+
+            if (!EsteValid())
+                throw new ArgumentException("Produs invalid citit din fișier.");
         }
+
+
+        public bool EsteValid()
+        {
+            return !string.IsNullOrWhiteSpace(Nume) &&
+                   Pret > 0 &&
+                   Stoc >= 0 &&
+                   furnizor != null &&
+                   furnizor.ContactValid();
+        }
+
         public string AfiseazaDetalii()
         {
             return $"{Nume} - {Pret} RON - Stoc: {Stoc} - Categorie: {Categorie} - Furnizor: {furnizor.Nume} - Contact: {furnizor.Contact}";
         }
     }
+
 }
