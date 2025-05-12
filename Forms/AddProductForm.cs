@@ -31,68 +31,13 @@ namespace Forms
             PrecompleteazaDate();
         }
 
-        private void InitializeComponent()
-        {
-            this.groupBoxTipProdus = new System.Windows.Forms.GroupBox();
-            this.radioPeriferic = new System.Windows.Forms.RadioButton();
-            this.radioComponenta = new System.Windows.Forms.RadioButton();
-            this.groupBoxTipProdus.SuspendLayout();
-            this.SuspendLayout();
-            // 
-            // groupBoxTipProdus
-            // 
-            this.groupBoxTipProdus.Controls.Add(this.radioPeriferic);
-            this.groupBoxTipProdus.Controls.Add(this.radioComponenta);
-            this.groupBoxTipProdus.Location = new System.Drawing.Point(125, 126);
-            this.groupBoxTipProdus.Name = "groupBoxTipProdus";
-            this.groupBoxTipProdus.Size = new System.Drawing.Size(239, 64);
-            this.groupBoxTipProdus.TabIndex = 0;
-            this.groupBoxTipProdus.TabStop = false;
-            this.groupBoxTipProdus.Text = "Tip Produs";
-            // 
-            // radioPeriferic
-            // 
-            this.radioPeriferic.AutoSize = true;
-            this.radioPeriferic.Location = new System.Drawing.Point(110, 20);
-            this.radioPeriferic.Name = "radioPeriferic";
-            this.radioPeriferic.Size = new System.Drawing.Size(91, 24);
-            this.radioPeriferic.TabIndex = 1;
-            this.radioPeriferic.TabStop = true;
-            this.radioPeriferic.Text = "Periferic";
-            this.radioPeriferic.UseVisualStyleBackColor = true;
-            // 
-            // radioComponenta
-            // 
-            this.radioComponenta.AutoSize = true;
-            this.radioComponenta.Checked = true;
-            this.radioComponenta.Location = new System.Drawing.Point(10, 20);
-            this.radioComponenta.Name = "radioComponenta";
-            this.radioComponenta.Size = new System.Drawing.Size(126, 24);
-            this.radioComponenta.TabIndex = 0;
-            this.radioComponenta.TabStop = true;
-            this.radioComponenta.Text = "Componenta";
-            this.radioComponenta.UseVisualStyleBackColor = true;
-            // 
-            // AddProductForm
-            // 
-            this.ClientSize = new System.Drawing.Size(498, 387);
-            this.Controls.Add(this.groupBoxTipProdus);
-            this.Name = "AddProductForm";
-            this.groupBoxTipProdus.ResumeLayout(false);
-            this.groupBoxTipProdus.PerformLayout();
-            this.ResumeLayout(false);
-
-        }
-
         private void PrecompleteazaDate()
         {
             txtName.Text = produsDeEditat.Nume;
             txtPrice.Text = produsDeEditat.Pret.ToString();
             txtStock.Text = produsDeEditat.Stoc.ToString();
-            if (produsDeEditat.Categorie == tip_produs.Componenta)
-                radioComponenta.Checked = true;
-            else
-                radioPeriferic.Checked = true;
+            radioComponenta.Checked = produsDeEditat.Categorie == tip_produs.Componenta;
+            radioPeriferic.Checked = produsDeEditat.Categorie == tip_produs.Periferic;
             txtFurnizorNume.Text = produsDeEditat.furnizor.Nume;
             txtFurnizorContact.Text = produsDeEditat.furnizor.Contact;
             chkActiv.Checked = produsDeEditat.Activ;
@@ -340,12 +285,6 @@ namespace Forms
             if (!int.TryParse(txtStock.Text, out int stoc) || stoc < 0)
             {
                 errorProvider.SetError(txtStock, "Stoc invalid!");
-                isValid = false;
-            }
-
-            if (!radioComponenta.Checked && !radioPeriferic.Checked)
-            {
-                errorProvider.SetError(groupBoxTipProdus, "Selectați tipul produsului!");
                 isValid = false;
             }
 
