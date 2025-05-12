@@ -11,10 +11,13 @@ namespace Forms
         private Produs produsDeEditat; // păstrăm produsul original pentru editare
 
         private TextBox txtName, txtPrice, txtStock;
-        private ComboBox cmbCategory;
         private TextBox txtFurnizorNume, txtFurnizorContact;
         private Button btnSave;
+        private GroupBox groupBoxTipProdus;
+        private RadioButton radioPeriferic;
+        private RadioButton radioComponenta;
         private ErrorProvider errorProvider;
+        private CheckBox chkActiv;
 
         public AddProductForm()
         {
@@ -27,78 +30,293 @@ namespace Forms
             SetupForm();
             PrecompleteazaDate();
         }
+
+        private void InitializeComponent()
+        {
+            this.groupBoxTipProdus = new System.Windows.Forms.GroupBox();
+            this.radioPeriferic = new System.Windows.Forms.RadioButton();
+            this.radioComponenta = new System.Windows.Forms.RadioButton();
+            this.groupBoxTipProdus.SuspendLayout();
+            this.SuspendLayout();
+            // 
+            // groupBoxTipProdus
+            // 
+            this.groupBoxTipProdus.Controls.Add(this.radioPeriferic);
+            this.groupBoxTipProdus.Controls.Add(this.radioComponenta);
+            this.groupBoxTipProdus.Location = new System.Drawing.Point(125, 126);
+            this.groupBoxTipProdus.Name = "groupBoxTipProdus";
+            this.groupBoxTipProdus.Size = new System.Drawing.Size(239, 64);
+            this.groupBoxTipProdus.TabIndex = 0;
+            this.groupBoxTipProdus.TabStop = false;
+            this.groupBoxTipProdus.Text = "Tip Produs";
+            // 
+            // radioPeriferic
+            // 
+            this.radioPeriferic.AutoSize = true;
+            this.radioPeriferic.Location = new System.Drawing.Point(110, 20);
+            this.radioPeriferic.Name = "radioPeriferic";
+            this.radioPeriferic.Size = new System.Drawing.Size(91, 24);
+            this.radioPeriferic.TabIndex = 1;
+            this.radioPeriferic.TabStop = true;
+            this.radioPeriferic.Text = "Periferic";
+            this.radioPeriferic.UseVisualStyleBackColor = true;
+            // 
+            // radioComponenta
+            // 
+            this.radioComponenta.AutoSize = true;
+            this.radioComponenta.Checked = true;
+            this.radioComponenta.Location = new System.Drawing.Point(10, 20);
+            this.radioComponenta.Name = "radioComponenta";
+            this.radioComponenta.Size = new System.Drawing.Size(126, 24);
+            this.radioComponenta.TabIndex = 0;
+            this.radioComponenta.TabStop = true;
+            this.radioComponenta.Text = "Componenta";
+            this.radioComponenta.UseVisualStyleBackColor = true;
+            // 
+            // AddProductForm
+            // 
+            this.ClientSize = new System.Drawing.Size(498, 387);
+            this.Controls.Add(this.groupBoxTipProdus);
+            this.Name = "AddProductForm";
+            this.groupBoxTipProdus.ResumeLayout(false);
+            this.groupBoxTipProdus.PerformLayout();
+            this.ResumeLayout(false);
+
+        }
+
         private void PrecompleteazaDate()
         {
             txtName.Text = produsDeEditat.Nume;
             txtPrice.Text = produsDeEditat.Pret.ToString();
             txtStock.Text = produsDeEditat.Stoc.ToString();
-            cmbCategory.SelectedItem = produsDeEditat.Categorie;
+            if (produsDeEditat.Categorie == tip_produs.Componenta)
+                radioComponenta.Checked = true;
+            else
+                radioPeriferic.Checked = true;
             txtFurnizorNume.Text = produsDeEditat.furnizor.Nume;
             txtFurnizorContact.Text = produsDeEditat.furnizor.Contact;
+            chkActiv.Checked = produsDeEditat.Activ;
         }
 
         private void SetupForm()
         {
-            this.Text = "Adaugă Produs";
-            this.Size = new Size(450, 400);
-            this.StartPosition = FormStartPosition.CenterParent;
+            // Tema întunecată
+            var darkBg = Color.FromArgb(30, 30, 30);
+            var darkPanel = Color.FromArgb(45, 45, 48);
+            var lightText = Color.WhiteSmoke;
+            var defaultFont = new Font("Segoe UI", 10F, FontStyle.Regular);
 
+            // Form principal
+            this.Text = "Adaugă Produs";
+            this.Size = new Size(500, 550);
+            this.StartPosition = FormStartPosition.CenterParent;
+            this.BackColor = darkBg;
+            this.ForeColor = lightText;
+            this.Font = defaultFont;
+
+            // ErrorProvider care să se potrivească
             errorProvider = new ErrorProvider();
             errorProvider.BlinkStyle = ErrorBlinkStyle.NeverBlink;
 
-            TableLayoutPanel tlp = new TableLayoutPanel();
-            tlp.Dock = DockStyle.Fill;
-            tlp.ColumnCount = 2;
-            tlp.RowCount = 7;
+            // GroupBox pentru tip produs
+            groupBoxTipProdus = new GroupBox
+            {
+                Text = "Tip produs",
+                AutoSize = true,
+                BackColor = darkPanel,
+                ForeColor = lightText,
+                Font = defaultFont,
+                Padding = new Padding(10),
+                Margin = new Padding(5)
+            };
+
+            // Radio buttons
+            radioComponenta = new RadioButton
+            {
+                Text = "Componentă",
+                Checked = true,
+                AutoSize = true,
+                Location = new Point(15, 28),
+                BackColor = Color.Transparent,
+                ForeColor = lightText,
+                Font = defaultFont
+            };
+            radioPeriferic = new RadioButton
+            {
+                Text = "Periferic",
+                AutoSize = true,
+                Location = new Point(140, 28),
+                BackColor = Color.Transparent,
+                ForeColor = lightText,
+                Font = defaultFont
+            };
+            groupBoxTipProdus.Controls.Add(radioComponenta);
+            groupBoxTipProdus.Controls.Add(radioPeriferic);
+
+            // CheckBox pentru activitate
+            chkActiv = new CheckBox
+            {
+                Text = "Produs activ",
+                Checked = true,               // implicit bifat
+                AutoSize = true,
+                Anchor = AnchorStyles.Left,
+                Margin = new Padding(3, 8, 3, 3),
+                ForeColor = lightText,          // dacă folosiți tema dark
+                Font = defaultFont
+            };
+
+            // TableLayoutPanel cu padding și spacing
+            TableLayoutPanel tlp = new TableLayoutPanel
+            {
+                Dock = DockStyle.Fill,
+                ColumnCount = 2,
+                RowCount = 8,
+                BackColor = darkBg,
+                Padding = new Padding(15),
+                CellBorderStyle = TableLayoutPanelCellBorderStyle.None,
+            };
+            tlp.RowStyles.Clear();
+            // Padding pentru margini
             tlp.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 40F));
             tlp.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 60F));
+            // Spacing între rânduri
             for (int i = 0; i < 7; i++)
-                tlp.RowStyles.Add(new RowStyle(SizeType.Absolute, i == 6 ? 50F : 40F));
+                tlp.RowStyles.Add(new RowStyle(SizeType.Absolute, 45F));
+            // Ultimul rând mai mare
+            tlp.RowStyles.Add(new RowStyle(SizeType.Absolute, 60F));
+            // Ultimul rând pentru butoane
+            tlp.RowStyles[3] = new RowStyle(SizeType.Absolute, 110F);
 
-            // Nume
-            Label lblName = new Label() { Text = "Nume Produs:", Anchor = AnchorStyles.Right, AutoSize = true };
-            txtName = new TextBox() { Anchor = AnchorStyles.Left, Width = 200 };
+            // Helper: creează label uniformă
+            Func<string, Label> makeLabel = txt => new Label
+            {
+                Text = txt,
+                Anchor = AnchorStyles.Right,
+                AutoSize = true,
+                ForeColor = lightText,
+                Font = defaultFont,
+                Margin = new Padding(3, 10, 3, 3)
+            };
 
-            // Pret
-            Label lblPrice = new Label() { Text = "Preț:", Anchor = AnchorStyles.Right, AutoSize = true };
-            txtPrice = new TextBox() { Anchor = AnchorStyles.Left, Width = 200 };
+            // Nume produs
+            Label lblName = makeLabel("Nume Produs:");
+            txtName = new TextBox
+            {
+                Anchor = AnchorStyles.Left,
+                Width = 220,
+                BackColor = darkPanel,
+                ForeColor = lightText,
+                Font = defaultFont,
+                BorderStyle = BorderStyle.FixedSingle,
+                Margin = new Padding(3, 8, 3, 3)
+            };
+
+            // Preț
+            Label lblPrice = makeLabel("Preț:");
+            txtPrice = new TextBox
+            {
+                Anchor = AnchorStyles.Left,
+                Width = 220,
+                BackColor = darkPanel,
+                ForeColor = lightText,
+                Font = defaultFont,
+                BorderStyle = BorderStyle.FixedSingle,
+                Margin = new Padding(3, 8, 3, 3)
+            };
 
             // Stoc
-            Label lblStock = new Label() { Text = "Stoc:", Anchor = AnchorStyles.Right, AutoSize = true };
-            txtStock = new TextBox() { Anchor = AnchorStyles.Left, Width = 200 };
+            Label lblStock = makeLabel("Stoc:");
+            txtStock = new TextBox
+            {
+                Anchor = AnchorStyles.Left,
+                Width = 220,
+                BackColor = darkPanel,
+                ForeColor = lightText,
+                Font = defaultFont,
+                BorderStyle = BorderStyle.FixedSingle,
+                Margin = new Padding(3, 8, 3, 3)
+            };
 
-            // Categorie
-            Label lblCategory = new Label() { Text = "Categorie:", Anchor = AnchorStyles.Right, AutoSize = true };
-            cmbCategory = new ComboBox() { Anchor = AnchorStyles.Left, Width = 200, DropDownStyle = ComboBoxStyle.DropDownList };
-            cmbCategory.DataSource = Enum.GetValues(typeof(tip_produs));
-
-            // Furnizor nume
-            Label lblFurnizorNume = new Label() { Text = "Nume Furnizor:", Anchor = AnchorStyles.Right, AutoSize = true };
-            txtFurnizorNume = new TextBox() { Anchor = AnchorStyles.Left, Width = 200 };
-
-            // Furnizor contact
-            Label lblFurnizorContact = new Label() { Text = "Contact Furnizor:", Anchor = AnchorStyles.Right, AutoSize = true };
-            txtFurnizorContact = new TextBox() { Anchor = AnchorStyles.Left, Width = 200 };
-
-            // Buton Salvează
-            btnSave = new Button() { Text = "Salvează", Anchor = AnchorStyles.None, Width = 100, Height = 30 };
-            btnSave.Click += BtnSave_Click;
-
-            // Adaugă în layout
+            // Adăugăm controalele în grid
             tlp.Controls.Add(lblName, 0, 0);
             tlp.Controls.Add(txtName, 1, 0);
             tlp.Controls.Add(lblPrice, 0, 1);
             tlp.Controls.Add(txtPrice, 1, 1);
             tlp.Controls.Add(lblStock, 0, 2);
             tlp.Controls.Add(txtStock, 1, 2);
-            tlp.Controls.Add(lblCategory, 0, 3);
-            tlp.Controls.Add(cmbCategory, 1, 3);
-            tlp.Controls.Add(lblFurnizorNume, 0, 4);
-            tlp.Controls.Add(txtFurnizorNume, 1, 4);
-            tlp.Controls.Add(lblFurnizorContact, 0, 5);
-            tlp.Controls.Add(txtFurnizorContact, 1, 5);
-            tlp.Controls.Add(btnSave, 1, 6);
 
+            // Tip produs
+            var lblTip = makeLabel("Tip produs:");
+            tlp.Controls.Add(lblTip, 0, 3);
+            tlp.Controls.Add(groupBoxTipProdus, 1, 3);
+
+            // Furnizor
+            Label lblFurnNume = makeLabel("Nume Furnizor:");
+            txtFurnizorNume = new TextBox
+            {
+                Anchor = AnchorStyles.Left,
+                Width = 220,
+                BackColor = darkPanel,
+                ForeColor = lightText,
+                Font = defaultFont,
+                BorderStyle = BorderStyle.FixedSingle,
+                Margin = new Padding(3, 8, 3, 3)
+            };
+            Label lblFurnContact = makeLabel("Contact Furnizor:");
+            txtFurnizorContact = new TextBox
+            {
+                Anchor = AnchorStyles.Left,
+                Width = 220,
+                BackColor = darkPanel,
+                ForeColor = lightText,
+                Font = defaultFont,
+                BorderStyle = BorderStyle.FixedSingle,
+                Margin = new Padding(3, 8, 3, 3)
+            };
+            tlp.Controls.Add(chkActiv, 1, 4);
+            tlp.Controls.Add(lblFurnNume, 0, 5);
+            tlp.Controls.Add(txtFurnizorNume, 1, 5);
+            tlp.Controls.Add(lblFurnContact, 0, 6);
+            tlp.Controls.Add(txtFurnizorContact, 1, 6);
+
+            // Butoane la final, aliniate dreapta
+            var pnlButtons = new FlowLayoutPanel
+            {
+                FlowDirection = FlowDirection.RightToLeft,
+                Dock = DockStyle.Fill,
+                BackColor = Color.Transparent,
+                Margin = new Padding(3, 10, 3, 3)
+            };
+            btnSave = new Button
+            {
+                Text = "Salvează",
+                Width = 100,
+                Height = 30,
+                Font = defaultFont,
+                BackColor = Color.FromArgb(28, 151, 234),
+                ForeColor = Color.White,
+                FlatStyle = FlatStyle.Flat,
+                Margin = new Padding(5, 0, 0, 0)
+            };
+            var btnCancel = new Button
+            {
+                Text = "Anulează",
+                Width = 100,
+                Height = 30,
+                Font = defaultFont,
+                BackColor = Color.FromArgb(100, 100, 100),
+                ForeColor = Color.White,
+                FlatStyle = FlatStyle.Flat,
+                Margin = new Padding(5, 0, 0, 0)
+            };
+            btnSave.Click += BtnSave_Click;
+            btnCancel.Click += (s, e) => { this.DialogResult = DialogResult.Cancel; this.Close(); };
+            pnlButtons.Controls.Add(btnSave);
+            pnlButtons.Controls.Add(btnCancel);
+
+            tlp.Controls.Add(pnlButtons, 1, 7);
+
+            // În final, adăugăm layout-ul pe form
             this.Controls.Add(tlp);
         }
 
@@ -113,7 +331,7 @@ namespace Forms
                 isValid = false;
             }
 
-            if (!float.TryParse(txtPrice.Text, out float pret) || pret <= 0)
+            if (!float.TryParse(txtPrice.Text, out float pret) || pret < 0)
             {
                 errorProvider.SetError(txtPrice, "Preț invalid!");
                 isValid = false;
@@ -125,9 +343,9 @@ namespace Forms
                 isValid = false;
             }
 
-            if (cmbCategory.SelectedItem == null)
+            if (!radioComponenta.Checked && !radioPeriferic.Checked)
             {
-                errorProvider.SetError(cmbCategory, "Selectați o categorie!");
+                errorProvider.SetError(groupBoxTipProdus, "Selectați tipul produsului!");
                 isValid = false;
             }
 
@@ -149,7 +367,11 @@ namespace Forms
             try
             {
                 var furnizor = new Furnizor(txtFurnizorNume.Text, txtFurnizorContact.Text);
-                var categorie = (tip_produs)cmbCategory.SelectedItem;
+                var categorie = radioComponenta.Checked
+                ? tip_produs.Componenta
+                : tip_produs.Periferic;
+                bool activ = chkActiv.Checked;
+
 
                 if (produsDeEditat != null)
                 {
@@ -157,15 +379,19 @@ namespace Forms
                     produsDeEditat.Nume = txtName.Text;
                     produsDeEditat.Pret = pret;
                     produsDeEditat.Stoc = stoc;
-                    produsDeEditat.Categorie = categorie;
                     produsDeEditat.furnizor = furnizor;
+                    produsDeEditat.Categorie = categorie;
+                    produsDeEditat.Activ = activ;
 
                     ProdusNou = produsDeEditat;
                 }
                 else
                 {
                     // Creăm produs nou
-                    Produs produs = new Produs(txtName.Text, pret, stoc, categorie, furnizor);
+                    var produs = new Produs(txtName.Text, pret, stoc, categorie, furnizor)
+                    {
+                        Activ = activ
+                    };
                     ProdusNou = produs;
                 }
 

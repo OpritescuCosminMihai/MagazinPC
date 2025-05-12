@@ -14,6 +14,7 @@ namespace LibrarieModeleMagazin
     }
     public class Produs
     {
+        public bool Activ { get; set; }
         public Guid ID { get; private set; } = Guid.NewGuid();
         public string Nume { get; set; }
         public float Pret { get; set; }
@@ -29,6 +30,8 @@ namespace LibrarieModeleMagazin
             Categorie = categorie;
             this.furnizor = furnizor;
 
+            Activ = true;
+
             if (!EsteValid())
                 throw new ArgumentException("Produsul conține date invalide.");
         }
@@ -43,6 +46,8 @@ namespace LibrarieModeleMagazin
             Stoc = int.Parse(date[3]);
             Categorie = (tip_produs)Enum.Parse(typeof(tip_produs), date[4]);
             furnizor = new Furnizor(date[5], date[6]);
+
+            Activ = true;
 
             if (!EsteValid())
                 throw new ArgumentException("Produs invalid citit din fișier.");
