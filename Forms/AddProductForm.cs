@@ -5,11 +5,16 @@ using System.Windows.Forms;
 
 namespace Forms
 {
+    // Form pentru adăugare sau editare produs
     public class AddProductForm : Form
     {
+        // Produsul completat sau editat de utilizator
         public Produs ProdusNou { get; private set; }
+
+        // Referință la produsul care se editează (dacă este cazul)
         private Produs produsDeEditat; // păstrăm produsul original pentru editare
 
+        // Controale pentru input
         private TextBox txtName, txtPrice, txtStock;
         private TextBox txtFurnizorNume, txtFurnizorContact;
         private Button btnSave;
@@ -19,11 +24,13 @@ namespace Forms
         private ErrorProvider errorProvider;
         private CheckBox chkActiv;
 
+        // Constructor pentru adăugare produs nou
         public AddProductForm()
         {
             SetupForm();
         }
 
+        // Constructor pentru editare produs existent
         public AddProductForm(Produs produsExist)
         {
             produsDeEditat = produsExist;
@@ -31,6 +38,7 @@ namespace Forms
             PrecompleteazaDate();
         }
 
+        // Completează câmpurile formularului cu valorile produsului de editat
         private void PrecompleteazaDate()
         {
             txtName.Text = produsDeEditat.Nume;
@@ -43,15 +51,16 @@ namespace Forms
             chkActiv.Checked = produsDeEditat.Activ;
         }
 
+        // Creează interfața grafică și configurează controalele
         private void SetupForm()
         {
-            // Tema întunecată
+            // Culori și fonturi pentru temă dark
             var darkBg = Color.FromArgb(30, 30, 30);
             var darkPanel = Color.FromArgb(45, 45, 48);
             var lightText = Color.WhiteSmoke;
             var defaultFont = new Font("Segoe UI", 10F, FontStyle.Regular);
 
-            // Form principal
+            // Setări generale pentru fereastră
             this.Text = "Adaugă Produs";
             this.Size = new Size(500, 550);
             this.StartPosition = FormStartPosition.CenterParent;
@@ -59,11 +68,11 @@ namespace Forms
             this.ForeColor = lightText;
             this.Font = defaultFont;
 
-            // ErrorProvider care să se potrivească
+            // Inițializare validări
             errorProvider = new ErrorProvider();
             errorProvider.BlinkStyle = ErrorBlinkStyle.NeverBlink;
 
-            // GroupBox pentru tip produs
+            // Grupare radio buttons pentru tip produs
             groupBoxTipProdus = new GroupBox
             {
                 Text = "Tip produs",
@@ -75,7 +84,7 @@ namespace Forms
                 Margin = new Padding(5)
             };
 
-            // Radio buttons
+            // Radio button Componentă
             radioComponenta = new RadioButton
             {
                 Text = "Componentă",
@@ -86,6 +95,8 @@ namespace Forms
                 ForeColor = lightText,
                 Font = defaultFont
             };
+
+            // Radio button Periferic
             radioPeriferic = new RadioButton
             {
                 Text = "Periferic",
@@ -98,19 +109,19 @@ namespace Forms
             groupBoxTipProdus.Controls.Add(radioComponenta);
             groupBoxTipProdus.Controls.Add(radioPeriferic);
 
-            // CheckBox pentru activitate
+            // Checkbox pentru activare produs
             chkActiv = new CheckBox
             {
                 Text = "Produs activ",
-                Checked = true,               // implicit bifat
+                Checked = true,             
                 AutoSize = true,
                 Anchor = AnchorStyles.Left,
                 Margin = new Padding(3, 8, 3, 3),
-                ForeColor = lightText,          // dacă folosiți tema dark
+                ForeColor = lightText,        
                 Font = defaultFont
             };
 
-            // TableLayoutPanel cu padding și spacing
+            // Grid pentru aranjarea elementelor
             TableLayoutPanel tlp = new TableLayoutPanel
             {
                 Dock = DockStyle.Fill,
@@ -132,7 +143,7 @@ namespace Forms
             // Ultimul rând pentru butoane
             tlp.RowStyles[3] = new RowStyle(SizeType.Absolute, 110F);
 
-            // Helper: creează label uniformă
+            // Funcție pentru etichete
             Func<string, Label> makeLabel = txt => new Label
             {
                 Text = txt,
@@ -224,7 +235,7 @@ namespace Forms
             tlp.Controls.Add(lblFurnContact, 0, 6);
             tlp.Controls.Add(txtFurnizorContact, 1, 6);
 
-            // Butoane la final, aliniate dreapta
+            // Butoane Salvare / Anulare
             var pnlButtons = new FlowLayoutPanel
             {
                 FlowDirection = FlowDirection.RightToLeft,
@@ -261,15 +272,18 @@ namespace Forms
 
             tlp.Controls.Add(pnlButtons, 1, 7);
 
-            // În final, adăugăm layout-ul pe form
+            // Adaugă totul pe form
             this.Controls.Add(tlp);
         }
 
+        // Acțiune la apăsarea butonului "Salvează"
         private void BtnSave_Click(object sender, EventArgs e)
         {
+            // Curățăm erorile anterioare
             errorProvider.Clear();
             bool isValid = true;
 
+            // Validare câmpuri
             if (string.IsNullOrWhiteSpace(txtName.Text))
             {
                 errorProvider.SetError(txtName, "Introduceți numele produsului!");
@@ -300,12 +314,16 @@ namespace Forms
                 isValid = false;
             }
 
+            // Dacă datele nu sunt valide, nu continuăm
             if (!isValid)
                 return;
 
             try
             {
+                // Creează obiectul Furnizor
                 var furnizor = new Furnizor(txtFurnizorNume.Text, txtFurnizorContact.Text);
+
+                // Verifică tipul de produs selectat
                 var categorie = radioComponenta.Checked
                 ? tip_produs.Componenta
                 : tip_produs.Periferic;
@@ -334,11 +352,13 @@ namespace Forms
                     ProdusNou = produs;
                 }
 
+                // Închidem form-ul cu rezultat OK
                 this.DialogResult = DialogResult.OK;
                 this.Close();
             }
             catch (ArgumentException ex)
             {
+                // Afișăm eroare dacă produsul este invalid
                 MessageBox.Show("Datele introduse nu sunt valide: " + ex.Message, "Eroare",
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }

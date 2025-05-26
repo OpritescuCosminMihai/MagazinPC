@@ -4,59 +4,83 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Security.Principal;
 using System.Windows.Forms;
 
 namespace Forms
 {
+    // Clasa MainMenuForm reprezintă fereastra principală a aplicației
     public partial class MainMenuForm : Form
     {
+        // Panou care va afișa cardurile produselor
         private FlowLayoutPanel flowPanelProducts;
+
+        // Câmp pentru căutarea produselor după nume
         private TextBox txtSearch;
+
+        // Buton pentru adăugarea unui produs nou
         private Button btnAddProduct;
+
+        // Panou care conține bara de căutare și butonul de adăugare
         private Panel panelSearchArea;
+
+        // Instanță pentru salvarea și încărcarea componentelor
         private StocareDateComponente stocareComponente;
+
+        // Instanță pentru salvarea și încărcarea perifericelor
         private StocareDatePeriferice stocarePeriferice;
+
+        // Obiectul care conține toate produsele din aplicație
         private Magazin magazin = new Magazin();
 
         public MainMenuForm()
         {
             InitializeComponent();
-            // Asigurăm că meniul este vizual deasupra oricărui panel
-            menuStrip1.SendToBack(); // trimite meniul dedesubt
 
+            // Menține meniul vizual sub alte controale
+            menuStrip1.SendToBack();
+
+            // Setează dimensiunea ferestrei principale
             this.Size = new Size(1280, 800);
 
+            // Inițializează salvarea în fișiere
             stocareComponente = new StocareDateComponente("StocComponente.txt");
             stocarePeriferice = new StocareDatePeriferice("StocPeriferice.txt");
 
+            // Inițializează meniul și panoul de start
             SetupMenuStrip();
             SetupHomePanel();
         }
 
+        // Configurează stilul și evenimentele pentru meniul de sus
         private void SetupMenuStrip()
         {
+            // Stil vizual pentru meniu
             menuStrip1.BackColor = Color.Black;
             menuStrip1.ForeColor = Color.White;
             menuStrip1.Font = new Font("Segoe UI", 14F, FontStyle.Regular);
             menuStrip1.Height = 50;
-            menuStrip1.Dock = DockStyle.Top; // 🧩 aliniere perfectă
+            menuStrip1.Dock = DockStyle.Top;
 
+            // Aplică stilul pe fiecare item
             foreach (ToolStripMenuItem item in menuStrip1.Items)
             {
                 item.ForeColor = Color.White;
                 item.BackColor = Color.Black;
             }
 
+            // Evenimente pentru click pe butoanele meniului
             homeToolStripMenuItem.Click += menuItemHome_Click;
             productsToolStripMenuItem.Click += menuItemProducts_Click;
             editToolStripMenuItem.Click += (sender, e) => MessageBox.Show("Ai apăsat Edit!");
             aboutToolStripMenuItem.Click += (sender, e) => MessageBox.Show("OverKhlocked by Cosmin", "About");
         }
 
+        // Afișează mesajul de bun venit + logo-ul în pagina Home
         private void SetupHomePanel()
         {
             panelHome.Controls.Clear();
-            panelHome.Dock = DockStyle.Fill; // 🧱 umple restul ferestrei
+            panelHome.Dock = DockStyle.Fill;
             panelHome.BackColor = Color.Black;
 
             Label lblWelcome = new Label
@@ -97,8 +121,10 @@ namespace Forms
             panelHome.BringToFront();
         }
 
+        // Configurează pagina Products (căutare + listă produse)
         private void SetupProductsPanel()
         {
+            // Dacă deja e configurat, doar îl reafișăm
             if (flowPanelProducts != null)
             {
                 panelSearchArea.Visible = true;
@@ -110,7 +136,7 @@ namespace Forms
                 return;
             }
 
-            // 🔍 Panelul de sus cu căutare + buton adăugare
+            // Creează bara de sus pentru căutare și adăugare
             panelSearchArea = new Panel
             {
                 Dock = DockStyle.Top,
@@ -149,12 +175,12 @@ namespace Forms
             txtSearch.TextChanged += TxtSearch_TextChanged;
             panelSearchArea.Controls.Add(txtSearch);
 
-            // ➕ Buton Adaugă produs
+            // Buton Adaugă produs
             btnAddProduct = CreeazaButonAdaugaProdus();
             btnAddProduct.Location = new Point(10, 55);
             panelSearchArea.Controls.Add(btnAddProduct);
 
-            // 🧱 Flow panel pentru carduri
+            // Creează containerul vizual pentru produsele afișate
             flowPanelProducts = new FlowLayoutPanel
             {
                 Dock = DockStyle.Fill,
@@ -164,14 +190,13 @@ namespace Forms
                 FlowDirection = FlowDirection.LeftToRight
             };
 
-            // 🔩 Adăugăm în formă (MenuStrip deja e prezent din Designer)
             this.Controls.Add(flowPanelProducts);     // conținut principal
             this.Controls.Add(panelSearchArea);       // bara de căutare + buton
 
             // Asigurăm ordinea vizuală
             menuStrip1.BringToFront();
 
-            // 🗃️ Încărcăm produsele din fișiere
+            // Încarcă toate produsele din fișiere și le afișează
             var produseComponente = stocareComponente.IncarcaProduse();
             var produsePeriferice = stocarePeriferice.IncarcaProduse();
 
@@ -193,8 +218,7 @@ namespace Forms
             flowPanelProducts.BringToFront();
         }
 
-
-
+        // Creează butonul "Adaugă Produs" și definește acțiunile sale
         private Button CreeazaButonAdaugaProdus()
         {
             Button btnAddProduct = new Button
@@ -245,6 +269,7 @@ namespace Forms
             return btnAddProduct;
         }
 
+        // Se execută la modificarea textului de căutare – filtrează cardurile afișate
         private void TxtSearch_TextChanged(object sender, EventArgs e)
         {
             if (txtSearch.ForeColor == Color.Gray) return;
@@ -276,6 +301,7 @@ namespace Forms
             txtSearch.SelectionStart = txtSearch.Text.Length;
         }
 
+        // Creează vizual un card pentru un produs (Panel cu toate detaliile + butoane Edit / Șterge)
         private Panel CreateProductCard(string nume, float pret, int stoc, string categorie, string furnizor, string contactFurnizor, Guid id)
         {
             Panel card = new Panel
@@ -439,7 +465,7 @@ namespace Forms
 
             card.Controls.Add(btnDelete);
 
-            // 🔹 ID produs (jos, mic)
+            // ID produs (jos, mic)
             Label lblID = new Label
             {
                 Text = "ID: " + id.ToString(),
@@ -454,6 +480,7 @@ namespace Forms
             return card;
         }
 
+        // Navigare în meniu – back to Home
         private void menuItemHome_Click(object sender, EventArgs e)
         {
             panelHome.Visible = true;
@@ -466,6 +493,7 @@ namespace Forms
                 panelSearchArea.Visible = false;
         }
 
+        // Navigare în meniu – mergi la Products
         private void menuItemProducts_Click(object sender, EventArgs e)
         {
             panelHome.Visible = false;

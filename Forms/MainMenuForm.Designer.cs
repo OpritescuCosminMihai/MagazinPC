@@ -83,7 +83,7 @@
             this.panelHome.Name = "panelHome";
             this.panelHome.Size = new System.Drawing.Size(1310, 788);
             this.panelHome.TabIndex = 1;
-            // 
+            //
             // MainMenuForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
